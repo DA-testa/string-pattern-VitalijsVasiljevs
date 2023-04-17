@@ -1,4 +1,4 @@
-# python3
+# Vitalijs Vasiljevs 3. grupa , 221RDB265
 import re
 hashMap = {}
 def read_input():
