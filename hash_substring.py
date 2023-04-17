@@ -1,32 +1,60 @@
 # python3
-
+import re
+hashMap = {}
 def read_input():
-    # this function needs to aquire input both from keyboard and file
-    # as before, use capital i (input from keyboard) and capital f (input from file) to choose which input type will follow
-    
-    
-    # after input type choice
-    # read two lines 
-    # first line is pattern 
-    # second line is text in which to look for pattern 
-    
-    # return both lines in one return
-    
-    # this is the sample return, notice the rstrip function
-    return (input().rstrip(), input().rstrip())
+    mode = input()  
+    if ((re.sub("[\r\n]", "", mode) == "I")) :
+        return (input().rstrip(), input().rstrip())                
+    elif (re.sub("[\r\n]", "", mode) == "F") : 
+        number_test = input()
+        number_test = re.sub("[\r\n]", "", number_test)
+        file_name = "tests/" + number_test
+        with open(file_name, 'r') as f:
+            lines = f.readlines()
+        return(lines[0], lines[1])   
+    pass
 
 def print_occurrences(output):
-    # this function should control output, it doesn't need any return
     print(' '.join(map(str, output)))
 
 def get_occurrences(pattern, text):
-    # this function should find the occurances using Rabin Karp alghoritm 
+    list = []
+    i = 0
+    if len(pattern) > len(text):
+        return ""
+    for char in text:
+        if char.isdigit():
+            hashMap[char] = int(char)
+        if not char in hashMap:
+            hashMap[char] = 10+i
+            i = i + 1
+    start_index = 0
+    end_index = len(pattern)
+    pattern_value = get_value(pattern)
+    if pattern_value == "":
+        return []
+    substring_value = get_value(text[start_index:end_index])
+    for i in range(len(text)-len(pattern)+1):
+        if pattern_value == substring_value:
+            list.append(start_index)
+        if end_index == len(text):
+            return list
+        start_char_value = hashMap[text[start_index]] * 10**(len(pattern)-1)
+        end_index = end_index + 1
+        start_index = start_index + 1
+        substring_value = (substring_value - start_char_value) * 10 + hashMap[text[end_index-1]]
+    return list
 
-    # and return an iterable variable
-    return [0]
-
-
-# this part launches the functions
+def get_value(pattern):
+    value = 0
+    len_of_pattern = len(pattern) - 1
+    i = 0
+    for char in pattern:
+        if not char in hashMap:
+            return ""
+        value = value + hashMap[char] * 10**(len_of_pattern-i)
+        i = i + 1
+    return value
+    
 if __name__ == '__main__':
     print_occurrences(get_occurrences(*read_input()))
-
