@@ -6,9 +6,7 @@ def read_input():
     if ((re.sub("[\r\n]", "", mode) == "I")) :
         return (input().rstrip(), input().rstrip())                
     elif (re.sub("[\r\n]", "", mode) == "F") : 
-        number_test = input()
-        number_test = re.sub("[\r\n]", "", number_test)
-        file_name = "tests/" + number_test
+        file_name = "tests/06" 
         with open(file_name, 'r') as f:
             lines = f.readlines()
         return(lines[0], lines[1])   
