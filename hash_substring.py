@@ -9,7 +9,7 @@ def read_input():
         file_name = "tests/06" 
         with open(file_name, 'r') as f:
             lines = f.readlines()
-        return(lines[0], lines[1])   
+        return(re.sub("[\n]", "", lines[0]), lines[1])   
     pass
 
 def print_occurrences(output):
